@@ -4,13 +4,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    {
-      "source": "/riscp/(.*)",
-      "destination": "/riscp/index.html"
-    },
-    {
-      "source": "/riscp",
-      "destination": "/riscp/index.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
