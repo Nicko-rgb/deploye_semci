@@ -5,8 +5,12 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/riscp/(.*)",
+      "destination": "/riscp/index.html"
+    },
+    {
+      "source": "/riscp",
+      "destination": "/riscp/index.html"
     }
   ]
 }
