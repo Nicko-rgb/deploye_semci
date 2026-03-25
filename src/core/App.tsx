@@ -20,7 +20,7 @@ const TramiteDocumentarioRoutes = lazy(() => import('../modules/tramite-document
 
 function App() {
   return (
-    <Router basename="/riscp">
+    <Router basename="/">
       <ModulesProvider>
         <Routes>
           {/* Rutas públicas */}
