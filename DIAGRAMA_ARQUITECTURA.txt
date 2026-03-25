@@ -1,0 +1,181 @@
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    ARQUITECTURA MICROFRONTEND                    │
+│                          SEMCI SYSTEM                            │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                         🎯 CORE (Shell)                          │
+│                  src/core/ - Base Principal                      │
+├─────────────────────────────────────────────────────────────────┤
+│  📱 App.tsx (Router Principal)                                  │
+│  🔐 AuthContext (Autenticación Global)                          │
+│  🎨 DashboardLayout (Layout Compartido)                         │
+│  🛡️ ProtectedRoute (Seguridad)                                  │
+│  ⚙️ Config (modules.ts - Registro de módulos)                   │
+│  🔧 Services (apiService, authService)                          │
+└─────────────────────────────────────────────────────────────────┘
+                              ▼
+        ┌─────────────────────────────────────────┐
+        │     Lazy Loading de Módulos            │
+        │     (Carga bajo demanda)                │
+        └─────────────────────────────────────────┘
+                              ▼
+    ┌──────────┬──────────┬──────────┬──────────┐
+    ▼          ▼          ▼          ▼          ▼
+
+┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
+│ 📊     │ │ 📝     │ │ 👥     │ │ 📄     │
+│ SEMCI  │ │REGISTRO│ │  RRHH  │ │TRÁMITE │
+└────────┘ └────────┘ └────────┘ └────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│           📊 MÓDULO SEMCI - Sistema de Estadística              │
+│           src/modules/semci/                                     │
+├─────────────────────────────────────────────────────────────────┤
+│  📁 pages/                                                       │
+│    ├── 🦠 Epidemiología (Dengue, Mapas, Análisis)              │
+│    ├── 📊 Reportes (Operacionales, Generales, Producción)      │
+│    ├── 📈 Indicadores (FED, Gestión, Salud Mental)             │
+│    ├── 🏥 SIS (Seguimientos, Indicadores)                      │
+│    ├── 🔍 Consultas (CNV, HIS, Personal, etc.)                 │
+│    ├── ✅ Calidad                                               │
+│    └── 📚 Repositorio                                           │
+│                                                                  │
+│  🔧 services/                                                    │
+│    ├── BoletinEpiService.ts                                     │
+│    ├── fileService.ts                                           │
+│    ├── importService.ts                                         │
+│    ├── accessoriesService.ts                                    │
+│    └── sis/seguimientosService.ts                              │
+│                                                                  │
+│  🚦 routes.tsx (Rutas lazy-loaded)                             │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│        📝 MÓDULO REGISTRO DE USUARIO                            │
+│        src/modules/registro-usuario/                             │
+├─────────────────────────────────────────────────────────────────┤
+│  📁 pages/                                                       │
+│    ├── Usuarios.tsx (Gestión completa)                         │
+│    └── UserSettings.tsx (Configuración)                        │
+│                                                                  │
+│  🔧 services/                                                    │
+│    └── userService.ts                                           │
+│                                                                  │
+│  🚦 routes.tsx                                                  │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│        👥 MÓDULO RECURSOS HUMANOS (En construcción)             │
+│        src/modules/recursos-humanos/                             │
+├─────────────────────────────────────────────────────────────────┤
+│  📁 pages/                                                       │
+│    └── Dashboard.tsx (Placeholder)                              │
+│                                                                  │
+│  🔜 Funcionalidades planificadas:                               │
+│    • Gestión de empleados                                       │
+│    • Control de asistencia                                      │
+│    • Permisos y licencias                                       │
+│    • Planillas                                                   │
+│    • Evaluaciones                                                │
+│                                                                  │
+│  🚦 routes.tsx                                                  │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│        📄 MÓDULO TRÁMITE DOCUMENTARIO (En construcción)         │
+│        src/modules/tramite-documentario/                         │
+├─────────────────────────────────────────────────────────────────┤
+│  📁 pages/                                                       │
+│    └── Dashboard.tsx (Placeholder)                              │
+│                                                                  │
+│  🔜 Funcionalidades planificadas:                               │
+│    • Recepción de documentos                                    │
+│    • Seguimiento de trámites                                    │
+│    • Derivación                                                  │
+│    • Archivo digital                                             │
+│    • Reportes de gestión                                         │
+│                                                                  │
+│  🚦 routes.tsx                                                  │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    🎨 FLUJO DE NAVEGACIÓN                        │
+└─────────────────────────────────────────────────────────────────┘
+
+┌──────────────┐
+│ LandingPage  │ ─────► Login ─────► Register
+└──────────────┘           │
+                           │ (Autenticación)
+                           ▼
+                  ┌─────────────────┐
+                  │ DashboardHome   │
+                  │  (Core Shell)   │
+                  └─────────────────┘
+                           │
+         ┌─────────────────┼─────────────────┬─────────────┐
+         ▼                 ▼                 ▼             ▼
+    ┌────────┐      ┌──────────┐      ┌────────┐   ┌─────────┐
+    │ SEMCI  │      │ REGISTRO │      │  RRHH  │   │ TRÁMITE │
+    │ Module │      │  Module  │      │ Module │   │ Module  │
+    └────────┘      └──────────┘      └────────┘   └─────────┘
+         │                 │                │             │
+    (Lazy Load)       (Lazy Load)     (Lazy Load)  (Lazy Load)
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    🔐 SEGURIDAD Y CONTEXTOS                      │
+└─────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────┐
+│      AuthContext (Global)            │
+│  • Usuario autenticado               │
+│  • Tokens de sesión                  │
+│  • Permisos base                     │
+└──────────────────────────────────────┘
+                  ▼
+┌──────────────────────────────────────┐
+│    ModulesContext (Global)           │
+│  • Módulos disponibles               │
+│  • Configuración de módulos          │
+│  • Estado de carga                   │
+└──────────────────────────────────────┘
+                  ▼
+┌──────────────────────────────────────┐
+│    ProtectedRoute                    │
+│  • Valida autenticación              │
+│  • Redirige si no autenticado        │
+│  • Muestra loading states            │
+└──────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    ✨ BENEFICIOS CLAVE                           │
+└─────────────────────────────────────────────────────────────────┘
+
+✅ Modularidad total - Cada módulo es independiente
+✅ Lazy Loading - Carga solo lo necesario
+✅ Escalabilidad - Fácil agregar nuevos módulos
+✅ Mantenibilidad - Código organizado por dominio
+✅ Desarrollo paralelo - Equipos trabajan independientemente
+✅ Performance - Optimización de carga
+✅ Reutilización - Core compartido entre módulos
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    📦 TECNOLOGÍAS                                │
+└─────────────────────────────────────────────────────────────────┘
+
+⚛️  React 19
+🎨 TypeScript
+🚀 Vite
+🎯 React Router v7
+💅 Tailwind CSS
+📊 Highcharts
+🗺️  Leaflet (Mapas)
+🔒 Autenticación JWT
+📡 Axios (API)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            Arquitectura diseñada para crecer y escalar
+                    Enero 2026 - SEMCI System
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
